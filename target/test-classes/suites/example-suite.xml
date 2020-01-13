@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="PWA" >
+    <test name="Pixel">
+        <parameter name="configurationName" value="Pixel"/>
+        <classes>
+            <class name="com.fismobile.appium.tests.AboutPageTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,11 @@
+{
+    "deviceCapabilities": {
+        "deviceName": "Pixel_3a_XL_API_29",
+        "platformVersion": "10.0",
+        "platformName": "Android",
+        "appWaitDuration": 3000,
+        "newCommandTimeout": 6000,
+        "automationName": "uiautomator2",
+        "browserName": "Chrome"
+    }
+}

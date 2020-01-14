@@ -34,15 +34,9 @@ public class ConfigFileReader {
         else throw new RuntimeException("appiumUrl not specified in the Configuration.properties file.");
     }
 
-    public String getPlatform(){
-        String platform = properties.getProperty("platform");
-        if(platform!= null) return platform;
-        else throw new RuntimeException("platform not specified in the Configuration.properties file.");
-    }
-
-    public String getRunOn(){
-        String runOn = properties.getProperty("runOn");
-        if(runOn!= null) return runOn;
-        else throw new RuntimeException("runOn not specified in the Configuration.properties file.");
+    public String getAppUrl(){
+        String appUrl = properties.getProperty("app.url");
+        if(appUrl!= null) return appUrl;
+        else throw new RuntimeException("appUrl not specified in the Configuration.properties file.");
     }
 }

@@ -37,7 +37,7 @@ public class BaseClass {
 
     @Parameters({"platform","runOn"})
     @BeforeClass
-    public void setup(@Optional("web") String platform, @Optional("safari") String runOn)
+    public void setup(@Optional("web") String platform, @Optional("chrome") String runOn)
     {
         System.out.println(platform);
         GlobalParameters.runType = platform;
@@ -47,6 +47,7 @@ public class BaseClass {
                 if(runOn.equalsIgnoreCase("chrome"))
                 {
                     System.out.println("Chrome Browser is opening..... ");
+                    System.out.println(path);
                     System.setProperty("webdriver.chrome.driver", path+"/drivers/web/chromedriver");
                     driver= new ChromeDriver();
                 }else if(runOn.equalsIgnoreCase("firefox"))
@@ -60,7 +61,7 @@ public class BaseClass {
                     driver= new SafariDriver();
                 }
                 driver.manage().window().maximize();
-                driver.get("http://saucelabs.com/test/guinea-pig");
+                driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
                 logger.debug("Web driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
@@ -73,7 +74,7 @@ public class BaseClass {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                driver.get("http://saucelabs.com/test/guinea-pig");
+                driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
                 logger.debug("Appium driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
             default:

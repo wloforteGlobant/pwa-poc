@@ -10,11 +10,12 @@ import org.openqa.selenium.support.FindBy;
 public class AnotherPage extends BasePage {
 
     @FindBy(id = "i_am_an_id")
-    private WebElement div;
+    private WebElement anotherDiv;
 
     public AnotherPage(WebDriver driver) { super(driver);}
 
-    public WebElement getDiv() { return div; }
+    public WebElement getDiv() { return anotherDiv; }
 
-    public String getDivText() { return div.getText(); }
+    public String getDivText() { return anotherDiv.getText(); }
+
 }

@@ -30,13 +30,13 @@ public class ConfigFileReader {
 
     public String getAppiumUrl() {
         String appiumUrl = properties.getProperty("appium.url");
-        if(appiumUrl!= null) return appiumUrl;
+        if(appiumUrl != null) { return appiumUrl; }
         else throw new RuntimeException("appiumUrl not specified in the Configuration.properties file.");
     }
 
     public String getAppUrl() {
         String appUrl = properties.getProperty("app.url");
-        if(appUrl!= null) return appUrl;
+        if(appUrl != null) { return appUrl; }
         else throw new RuntimeException("appUrl not specified in the Configuration.properties file.");
     }
 }

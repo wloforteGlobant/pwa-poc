@@ -25,5 +25,4 @@ public class AboutPageTest extends BaseClass {
         Assert.assertTrue(aboutPage.getComments().equalsIgnoreCase("HOLA SOY UN COMMENT"));
     }
 
-
 }

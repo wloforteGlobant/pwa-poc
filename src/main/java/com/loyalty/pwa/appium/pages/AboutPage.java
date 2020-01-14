@@ -10,21 +10,21 @@ import org.openqa.selenium.support.FindBy;
 public class AboutPage extends BasePage {
 
     @FindBy(id = "i_am_an_id")
-    private WebElement title;
+    private WebElement aboutTitle;
 
     @FindBy(id = "i am a link")
-    private WebElement link;
+    private WebElement aboutLink;
 
     @FindBy(id = "comments")
-    private WebElement txt_comments;
+    private WebElement txtComments;
 
     public AboutPage(WebDriver driver) { super(driver); }
 
     public String getTitle() {
-        return title.getText();
+        return aboutTitle.getText();
     }
 
-    public void clickLink() { link.click(); }
+    public void clickLink() { aboutLink.click(); }
 
     public AnotherPage goToAnother() throws InterruptedException {
         clickLink();
@@ -32,7 +32,8 @@ public class AboutPage extends BasePage {
         return new AnotherPage(driver);
     }
 
-    public String getComments() { return txt_comments.getAttribute("value"); }
+    public String getComments() { return txtComments.getAttribute("value"); }
 
-    public void writeComment() { txt_comments.sendKeys("HOLA SOY UN COMMENT"); }
+    public void writeComment() { txtComments.sendKeys("HOLA SOY UN COMMENT"); }
+
 }

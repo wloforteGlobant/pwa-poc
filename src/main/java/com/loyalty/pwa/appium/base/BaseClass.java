@@ -36,23 +36,27 @@ public class BaseClass {
 
     @Parameters({TestConstants.PLATFORM,TestConstants.RUNON})
     @BeforeClass
-    public void setup(@Optional(TestConstants.DEFAULT_PLATFORM) String platform, @Optional(TestConstants.DEFAULT_RUNON) String runOn) {
+    public void setup(@Optional(TestConstants.WEB_PLATFORM) String platform, @Optional(TestConstants.CHROME_BROWSER) String runOn) {
         logger.info("Platform: " + platform);
         GlobalParameters.runType = platform;
         String path = System.getProperty("user.dir");
         switch (platform) {
-            case "web":
-                if(runOn.equalsIgnoreCase("chrome")) {
-                    logger.debug("Chrome Browser is opening...");
-                    System.setProperty("webdriver.chrome.driver", path+"/drivers/web/chromedriver");
-                    driver= new ChromeDriver();
-                }else if(runOn.equalsIgnoreCase("firefox")) {
-                    logger.debug("Firefox Browser is opening...");
-                    System.setProperty("webdriver.gecko.driver", path+"/drivers/web/geckodriver");
-                    driver= new FirefoxDriver();
-                }else if(runOn.equalsIgnoreCase("safari")) {
-                    logger.debug("Safari Browser is opening...");
-                    driver= new SafariDriver();
+            case TestConstants.WEB_PLATFORM:
+                switch (runOn) {
+                    case TestConstants.CHROME_BROWSER:
+                        logger.debug("Chrome Browser is opening...");
+                        System.setProperty("webdriver.chrome.driver", path + "/drivers/web/chromedriver");
+                        driver = new ChromeDriver();
+                        break;
+                    case TestConstants.SAFARI_BROWSER:
+                        logger.debug("Safari Browser is opening...");
+                        driver = new SafariDriver();
+                        break;
+                    case TestConstants.FIREFOX_BROWSER:
+                        logger.debug("Firefox Browser is opening...");
+                        System.setProperty("webdriver.gecko.driver", path + "/drivers/web/geckodriver");
+                        driver = new FirefoxDriver();
+                        break;
                 }
                 //TODO IMPLEMENT EDGE
                 driver.manage().window().maximize();
@@ -61,11 +65,11 @@ public class BaseClass {
                 logger.debug("Web driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
 
-            case "mobile":
+            case TestConstants.MOBILE_PLATFORM:
                 logger.debug("Mobile Device: " + runOn + " is opening.....");
-                DesiredCapabilities caps = setupDevice(runOn + ".json");
+                DesiredCapabilities desiredCapabilities = setupDevice(runOn + ".json");
                 try {
-                    driver = new AppiumDriver(new URL(FileReaderManager.getInstance().getConfigReader().getAppiumUrl()), caps);
+                    driver = new AppiumDriver(new URL(FileReaderManager.getInstance().getConfigReader().getAppiumUrl()), desiredCapabilities);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -84,20 +88,18 @@ public class BaseClass {
         Object obj = null;
         try {
             obj = parser.parse(new FileReader(deviceConfigFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         JSONObject jsonObject = (JSONObject) obj;
         JSONObject capabilities = (JSONObject) jsonObject.get("deviceCapabilities");
-        DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         for (Iterator iterator = capabilities.keySet().iterator(); iterator.hasNext();) {
             String capabilityName = (String) iterator.next();
             String capabilityValue = capabilities.get(capabilityName).toString();
-            caps.setCapability(capabilityName, capabilityValue);
+            desiredCapabilities.setCapability(capabilityName, capabilityValue);
         }
-        return caps;
+        return desiredCapabilities;
     }
 
     @AfterClass(alwaysRun = true)

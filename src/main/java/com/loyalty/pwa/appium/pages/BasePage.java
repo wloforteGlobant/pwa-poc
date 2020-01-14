@@ -1,5 +1,6 @@
 package com.loyalty.pwa.appium.pages;
 
+import com.loyalty.pwa.appium.base.TestConstants;
 import com.loyalty.pwa.appium.utility.GlobalParameters;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
@@ -25,12 +26,12 @@ public class BasePage {
 
     public BasePage (WebDriver driver) {
         this.driver = driver;
-        timeoutSec = 30;
+        timeoutSec = TestConstants.TIMEOUT_SECONDS;
         this.wait = new WebDriverWait(driver, timeoutSec);
         driver.manage().timeouts().implicitlyWait(timeoutSec, TimeUnit.SECONDS);
-        if(GlobalParameters.runType.equalsIgnoreCase("web")) {
+        if(GlobalParameters.runType.equalsIgnoreCase(TestConstants.WEB_PLATFORM)) {
             PageFactory.initElements(driver, this);
-        }else {
+        } else {
             PageFactory.initElements(new AppiumFieldDecorator(driver), this);
         }
     }

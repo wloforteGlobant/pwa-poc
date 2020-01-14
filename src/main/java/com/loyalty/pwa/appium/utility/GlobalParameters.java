@@ -1,4 +1,4 @@
-package com.fismobile.appium.utility;
+package com.loyalty.pwa.appium.utility;
 /*
  *
  * @author wloforte

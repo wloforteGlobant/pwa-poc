@@ -1,4 +1,4 @@
-package com.fismobile.appium.utility;
+package com.loyalty.pwa.appium.utility;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,7 +11,7 @@ public class ConfigFileReader {
     private final String propertyFilePath= "src/test/resources/configuration.properties";
 
 
-    public ConfigFileReader(){
+    public ConfigFileReader() {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(propertyFilePath));
@@ -28,13 +28,13 @@ public class ConfigFileReader {
         }
     }
 
-    public String getAppiumUrl(){
+    public String getAppiumUrl() {
         String appiumUrl = properties.getProperty("appium.url");
         if(appiumUrl!= null) return appiumUrl;
         else throw new RuntimeException("appiumUrl not specified in the Configuration.properties file.");
     }
 
-    public String getAppUrl(){
+    public String getAppUrl() {
         String appUrl = properties.getProperty("app.url");
         if(appUrl!= null) return appUrl;
         else throw new RuntimeException("appUrl not specified in the Configuration.properties file.");

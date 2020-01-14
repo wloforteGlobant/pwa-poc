@@ -1,6 +1,6 @@
-package com.fismobile.appium.pages;
+package com.loyalty.pwa.appium.pages;
 
-import com.fismobile.appium.utility.GlobalParameters;
+import com.loyalty.pwa.appium.utility.GlobalParameters;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -28,11 +28,9 @@ public class BasePage {
         timeoutSec = 30;
         this.wait = new WebDriverWait(driver, timeoutSec);
         driver.manage().timeouts().implicitlyWait(timeoutSec, TimeUnit.SECONDS);
-        if(GlobalParameters.runType.equalsIgnoreCase("web"))
-        {
+        if(GlobalParameters.runType.equalsIgnoreCase("web")) {
             PageFactory.initElements(driver, this);
-        }else
-        {
+        }else {
             PageFactory.initElements(new AppiumFieldDecorator(driver), this);
         }
     }

@@ -1,4 +1,4 @@
-package com.fismobile.appium.pages;
+package com.loyalty.pwa.appium.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

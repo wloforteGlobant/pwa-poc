@@ -1,10 +1,11 @@
-package com.fismobile.appium.base;
+package com.loyalty.pwa.appium.base;
 
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.loyalty.pwa.appium.utility.GlobalParameters;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,8 +13,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.annotations.*;
-
-import com.fismobile.appium.utility.GlobalParameters;
 
 import io.appium.java_client.AppiumDriver;
 
@@ -36,29 +35,26 @@ public class BaseClass {
 
     @Parameters({"platform","runOn"})
     @BeforeClass
-    public void setup(@Optional("web") String platform, @Optional("chrome") String runOn)
-    {
+    public void setup(@Optional("web") String platform, @Optional("chrome") String runOn) {
         System.out.println(platform);
         GlobalParameters.runType = platform;
         String path = System.getProperty("user.dir");
         switch (platform) {
             case "web":
-                if(runOn.equalsIgnoreCase("chrome"))
-                {
+                if(runOn.equalsIgnoreCase("chrome")) {
                     System.out.println("Chrome Browser is opening..... ");
                     System.out.println(path);
                     System.setProperty("webdriver.chrome.driver", path+"/drivers/web/chromedriver");
                     driver= new ChromeDriver();
-                }else if(runOn.equalsIgnoreCase("firefox"))
-                {
+                }else if(runOn.equalsIgnoreCase("firefox")) {
                     System.out.println("Firefox Browser is opening..... ");
                     System.setProperty("webdriver.gecko.driver", path+"/drivers/web/geckodriver");
                     driver= new FirefoxDriver();
-                }else if(runOn.equalsIgnoreCase("safari"))
-                {
+                }else if(runOn.equalsIgnoreCase("safari")) {
                     System.out.println("Safari Browser is opening..... ");
                     driver= new SafariDriver();
                 }
+                //TODO IMPLEMENT EDGE
                 driver.manage().window().maximize();
                 driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);

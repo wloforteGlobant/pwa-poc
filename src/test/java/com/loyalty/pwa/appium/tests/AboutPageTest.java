@@ -1,8 +1,8 @@
 
-package com.fismobile.appium.tests;
+package com.loyalty.pwa.appium.tests;
 
-import com.fismobile.appium.base.BaseClass;
-import com.fismobile.appium.pages.AboutPage;
+import com.loyalty.pwa.appium.base.BaseClass;
+import com.loyalty.pwa.appium.pages.AboutPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,16 +13,14 @@ import org.testng.annotations.Test;
 public class AboutPageTest extends BaseClass {
 
     @Test
-    void test1(){
+    void test1() {
         AboutPage aboutPage = new AboutPage(getDriver());
-        System.out.println("------------------------TEST 1--------------------");
         Assert.assertTrue(aboutPage.getTitle().equalsIgnoreCase("I am a div"));
     }
 
     @Test
-    void test2(){
+    void test2() {
         AboutPage aboutPage = new AboutPage(getDriver());
-        System.out.println("------------------------TEST 2--------------------");
         aboutPage.writeComment();
         Assert.assertTrue(aboutPage.getComments().equalsIgnoreCase("HOLA SOY UN COMMENT"));
     }

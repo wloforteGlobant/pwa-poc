@@ -1,8 +1,8 @@
-package com.fismobile.appium.tests;
+package com.loyalty.pwa.appium.tests;
 
-import com.fismobile.appium.base.BaseClass;
-import com.fismobile.appium.pages.AboutPage;
-import com.fismobile.appium.pages.AnotherPage;
+import com.loyalty.pwa.appium.base.BaseClass;
+import com.loyalty.pwa.appium.pages.AboutPage;
+import com.loyalty.pwa.appium.pages.AnotherPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

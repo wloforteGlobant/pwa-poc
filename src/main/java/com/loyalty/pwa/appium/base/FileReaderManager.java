@@ -1,6 +1,7 @@
-package com.fismobile.appium.base;
+package com.loyalty.pwa.appium.base;
 
-import com.fismobile.appium.utility.ConfigFileReader;
+import com.loyalty.pwa.appium.utility.ConfigFileReader;
+
 /*
  *
  * @author wloforte

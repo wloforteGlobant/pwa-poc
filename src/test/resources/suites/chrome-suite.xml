@@ -4,7 +4,7 @@
         <parameter name="platform" value="web"/>
         <parameter name="platform" value="chrome"/>
         <classes>
-            <class name="com.fismobile.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
         </classes>
     </test>
 </suite>

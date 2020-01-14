@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import com.loyalty.pwa.appium.base.TestConstants;
 /*
  *
  * @author wloforte
@@ -33,25 +34,24 @@ public class BaseClass {
     private static WebDriver driver;
     private Logger logger = LogManager.getLogger(BaseClass.class);
 
-    @Parameters({"platform","runOn"})
+    @Parameters({TestConstants.PLATFORM,TestConstants.RUNON})
     @BeforeClass
-    public void setup(@Optional("web") String platform, @Optional("chrome") String runOn) {
-        System.out.println(platform);
+    public void setup(@Optional(TestConstants.DEFAULT_PLATFORM) String platform, @Optional(TestConstants.DEFAULT_RUNON) String runOn) {
+        logger.info("Platform: " + platform);
         GlobalParameters.runType = platform;
         String path = System.getProperty("user.dir");
         switch (platform) {
             case "web":
                 if(runOn.equalsIgnoreCase("chrome")) {
-                    System.out.println("Chrome Browser is opening..... ");
-                    System.out.println(path);
+                    logger.debug("Chrome Browser is opening...");
                     System.setProperty("webdriver.chrome.driver", path+"/drivers/web/chromedriver");
                     driver= new ChromeDriver();
                 }else if(runOn.equalsIgnoreCase("firefox")) {
-                    System.out.println("Firefox Browser is opening..... ");
+                    logger.debug("Firefox Browser is opening...");
                     System.setProperty("webdriver.gecko.driver", path+"/drivers/web/geckodriver");
                     driver= new FirefoxDriver();
                 }else if(runOn.equalsIgnoreCase("safari")) {
-                    System.out.println("Safari Browser is opening..... ");
+                    logger.debug("Safari Browser is opening...");
                     driver= new SafariDriver();
                 }
                 //TODO IMPLEMENT EDGE
@@ -62,7 +62,7 @@ public class BaseClass {
                 break;
 
             case "mobile":
-                System.out.println("Mobile device: "+runOn+" is opening.....");
+                logger.debug("Mobile Device: " + runOn + " is opening.....");
                 DesiredCapabilities caps = setupDevice(runOn + ".json");
                 try {
                     driver = new AppiumDriver(new URL(FileReaderManager.getInstance().getConfigReader().getAppiumUrl()), caps);
@@ -102,13 +102,11 @@ public class BaseClass {
 
     @AfterClass(alwaysRun = true)
     public void tearDown() {
-        System.out.println("AFTER CLASS");
         driver.quit();
     }
 
 
     public WebDriver getDriver() {
-        System.out.println("GET DRIVER");
         return this.driver;
     }
 

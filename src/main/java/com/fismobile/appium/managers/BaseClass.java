@@ -35,17 +35,15 @@ public class BaseClass {
     private TestContext testContext;
     private Logger logger = LogManager.getLogger(BaseClass.class);
 
-
-    private WebDriver setup()
+    @Parameters({"platform","runOn"})
+    @BeforeClass
+    public void setup(@Optional("web") String platform, @Optional("safari") String runOn)
     {
-        String platform = FileReaderManager.getInstance().getConfigReader().getPlatform();
-        String runOn = FileReaderManager.getInstance().getConfigReader().getRunOn();
         System.out.println(platform);
         GlobalParameters.runType = platform;
         String path = System.getProperty("user.dir");
         switch (platform) {
             case "web":
-
                 if(runOn.equalsIgnoreCase("chrome"))
                 {
                     System.out.println("Chrome Browser is opening..... ");
@@ -82,8 +80,6 @@ public class BaseClass {
                 System.out.println("Incorrect Platform...");
                 break;
         }
-        return driver;
-
     }
 
     private DesiredCapabilities setupDevice(String configurationFile) {
@@ -108,20 +104,16 @@ public class BaseClass {
         return caps;
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void tearDown() {
         System.out.println("AFTER CLASS");
         driver.quit();
     }
 
-    @BeforeClass
+
     public WebDriver getDriver() {
-        System.out.println("BEFORE CLASS 1");
-        if(driver == null) {
-            System.out.println("BEFORE CLASS 2");
-            driver = setup();
-        }
-        return driver;
+        System.out.println("GET DRIVER");
+        return this.driver;
     }
 
 }

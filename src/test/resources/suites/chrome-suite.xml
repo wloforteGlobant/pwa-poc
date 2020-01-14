@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="PWA" >
+    <test name="Chrome">
+        <parameter name="platform" value="web"/>
+        <parameter name="platform" value="chrome"/>
+        <classes>
+            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+        </classes>
+    </test>
+</suite>

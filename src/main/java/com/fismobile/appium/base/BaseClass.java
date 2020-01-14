@@ -1,4 +1,4 @@
-package com.fismobile.appium.managers;
+package com.fismobile.appium.base;
 
 
 import java.io.IOException;
@@ -32,7 +32,6 @@ import org.json.simple.parser.JSONParser;
 public class BaseClass {
 
     private static WebDriver driver;
-    private TestContext testContext;
     private Logger logger = LogManager.getLogger(BaseClass.class);
 
     @Parameters({"platform","runOn"})

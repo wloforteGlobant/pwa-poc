@@ -1,4 +1,4 @@
-package com.fismobile.appium.managers;
+package com.fismobile.appium.base;
 
 import com.fismobile.appium.utility.ConfigFileReader;
 /*

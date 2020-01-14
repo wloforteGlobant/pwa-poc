@@ -1,6 +1,6 @@
 package com.fismobile.appium.tests;
 
-import com.fismobile.appium.managers.BaseClass;
+import com.fismobile.appium.base.BaseClass;
 import com.fismobile.appium.pages.AboutPage;
 import com.fismobile.appium.pages.AnotherPage;
 import org.testng.Assert;

@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 /*
@@ -42,8 +43,8 @@ public class BasePage {
 
     WebElement fluentWait(WebDriver driver, By elementIdentifier){
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(60, TimeUnit.SECONDS)
-                .pollingEvery(1, TimeUnit.SECONDS)
+                .withTimeout(Duration.ofSeconds(TestConstants.TIMEOUT_SECONDS))
+                .pollingEvery(Duration.ofSeconds(1))
                 .ignoring(NoSuchElementException.class);
 
         return wait.until(new Function<WebDriver, WebElement>() {

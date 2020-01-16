@@ -45,7 +45,7 @@ public class BaseClass {
                 switch (runOn) {
                     case TestConstants.CHROME_BROWSER:
                         logger.debug("Chrome Browser is opening...");
-                        System.setProperty("webdriver.chrome.driver", path + "/drivers/web/chromedriver");
+                        System.setProperty(TestConstants.CHROME_PROPERTY, path + "/drivers/web/chromedriver");
                         driver = new ChromeDriver();
                         break;
                     case TestConstants.SAFARI_BROWSER:
@@ -54,11 +54,14 @@ public class BaseClass {
                         break;
                     case TestConstants.FIREFOX_BROWSER:
                         logger.debug("Firefox Browser is opening...");
-                        System.setProperty("webdriver.gecko.driver", path + "/drivers/web/geckodriver");
+                        System.setProperty(TestConstants.FIREFOX_PROPERTY, path + "/drivers/web/geckodriver");
                         driver = new FirefoxDriver();
                         break;
+                    case TestConstants.EDGE_BROWSER:
+                        logger.debug("Edge is opening...");
+                        //TODO IMPLEMENT EDGE
+                        break;
                 }
-                //TODO IMPLEMENT EDGE
                 driver.manage().window().maximize();
                 driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
@@ -82,8 +85,8 @@ public class BaseClass {
         }
     }
 
-    private DesiredCapabilities setupDevice(String configurationFile) {
-        File deviceConfigFile = new File("src/test/resources/configurations/" + configurationFile);
+    private DesiredCapabilities setupDevice(String device) {
+        File deviceConfigFile = new File("src/test/resources/configurations/" + device);
         JSONParser parser = new JSONParser();
         Object obj = null;
         try {

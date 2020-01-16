@@ -21,4 +21,11 @@
             <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
         </classes>
     </test>
+    <test name="iPhone">
+        <parameter name="platform" value="mobile"/>
+        <parameter name="runOn" value="iPhone"/>
+        <classes>
+            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+        </classes>
+    </test>
 </suite>

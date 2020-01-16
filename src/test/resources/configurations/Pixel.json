@@ -6,6 +6,7 @@
         "appWaitDuration": 3000,
         "newCommandTimeout": 6000,
         "automationName": "uiautomator2",
-        "browserName": "Chrome"
+        "browserName": "Chrome",
+        "avd": "Pixel_3a_XL_API_29"
     }
 }

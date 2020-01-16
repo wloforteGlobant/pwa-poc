@@ -2,9 +2,10 @@
 <suite name="PWA" >
     <test name="Chrome">
         <parameter name="platform" value="web"/>
-        <parameter name="platform" value="chrome"/>
+        <parameter name="runOn" value="chrome"/>
         <classes>
             <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.AnotherPageTest"/>
         </classes>
     </test>
 </suite>

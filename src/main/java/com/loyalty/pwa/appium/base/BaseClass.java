@@ -1,7 +1,9 @@
 package com.loyalty.pwa.appium.base;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.ServerSocket;
 import java.net.URL;
 
 import com.loyalty.pwa.appium.utility.GlobalParameters;
@@ -73,7 +75,7 @@ public class BaseClass {
                 break;
 
             case TestConstants.MOBILE_PLATFORM:
-                startAppiumServer();
+                if (!isServerRunnning()) { startAppiumServer(); }
                 logger.debug("Mobile Device: " + runOn + " is opening.....");
                 DesiredCapabilities desiredCapabilities = setupDevice(runOn + ".json");
                 try {
@@ -105,6 +107,21 @@ public class BaseClass {
 
         service = AppiumDriverLocalService.buildService(appiumServiceBuilder);
         service.start();
+    }
+
+    private boolean isServerRunnning() {
+        boolean isServerRunning = false;
+        ServerSocket serverSocket;
+        try {
+            InetAddress address = InetAddress.getByName(TestConstants.APPIUM_IP_ADDRESS);
+            serverSocket = new ServerSocket(TestConstants.APPIUM_PORT, 0, address);
+            serverSocket.close();
+        } catch (IOException e) {
+            isServerRunning = true;
+        } finally {
+            serverSocket = null;
+        }
+        return isServerRunning;
     }
 
     private DesiredCapabilities setupDevice(String device) {

@@ -1,11 +1,13 @@
 package com.loyalty.pwa.appium.base;
 
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.loyalty.pwa.appium.utility.GlobalParameters;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,7 +26,6 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.loyalty.pwa.appium.base.TestConstants;
 /*
  *
  * @author wloforte
@@ -33,19 +34,22 @@ public class BaseClass {
 
     private static WebDriver driver;
     private Logger logger = LogManager.getLogger(BaseClass.class);
+    private AppiumDriverLocalService service;
+    private AppiumServiceBuilder appiumServiceBuilder;
+    private DesiredCapabilities appiumCapabilities;
+    private String path = System.getProperty("user.dir");
 
     @Parameters({TestConstants.PLATFORM,TestConstants.RUNON})
     @BeforeClass
     public void setup(@Optional(TestConstants.WEB_PLATFORM) String platform, @Optional(TestConstants.CHROME_BROWSER) String runOn) {
         logger.info("Platform: " + platform);
         GlobalParameters.runType = platform;
-        String path = System.getProperty("user.dir");
         switch (platform) {
             case TestConstants.WEB_PLATFORM:
                 switch (runOn) {
                     case TestConstants.CHROME_BROWSER:
                         logger.debug("Chrome Browser is opening...");
-                        System.setProperty(TestConstants.CHROME_PROPERTY, path + "/drivers/web/chromedriver");
+                        System.setProperty(TestConstants.CHROME_PROPERTY, path + TestConstants.CHROME_PATH);
                         driver = new ChromeDriver();
                         break;
                     case TestConstants.SAFARI_BROWSER:
@@ -54,7 +58,7 @@ public class BaseClass {
                         break;
                     case TestConstants.FIREFOX_BROWSER:
                         logger.debug("Firefox Browser is opening...");
-                        System.setProperty(TestConstants.FIREFOX_PROPERTY, path + "/drivers/web/geckodriver");
+                        System.setProperty(TestConstants.FIREFOX_PROPERTY, path + TestConstants.FIREFOX_PATH);
                         driver = new FirefoxDriver();
                         break;
                     case TestConstants.EDGE_BROWSER:
@@ -69,6 +73,7 @@ public class BaseClass {
                 break;
 
             case TestConstants.MOBILE_PLATFORM:
+                startAppiumServer();
                 logger.debug("Mobile Device: " + runOn + " is opening.....");
                 DesiredCapabilities desiredCapabilities = setupDevice(runOn + ".json");
                 try {
@@ -83,6 +88,23 @@ public class BaseClass {
                 System.out.println("Incorrect Platform...");
                 break;
         }
+    }
+
+    public void startAppiumServer() {
+
+        appiumCapabilities = new DesiredCapabilities();
+        appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_BINARY, path + TestConstants.APPIUM_CHROME_PATH);
+        appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_RESET, "false");
+
+        appiumServiceBuilder = new AppiumServiceBuilder();
+        appiumServiceBuilder.withIPAddress(TestConstants.APPIUM_IP_ADDRESS);
+        appiumServiceBuilder.usingPort(TestConstants.APPIUM_PORT);
+        appiumServiceBuilder.withCapabilities(appiumCapabilities);
+        appiumServiceBuilder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
+        appiumServiceBuilder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
+
+        service = AppiumDriverLocalService.buildService(appiumServiceBuilder);
+        service.start();
     }
 
     private DesiredCapabilities setupDevice(String device) {
@@ -107,9 +129,21 @@ public class BaseClass {
 
     @AfterClass(alwaysRun = true)
     public void tearDown() {
-        driver.quit();
+        if (driver.toString() == null){
+            logger.debug("DRIVER SESSION IS NOT ACTIVE");
+        } else {
+            driver.quit();
+        }
     }
 
+    @AfterSuite(alwaysRun = true)
+    public void stopAppiumServer() {
+        if (GlobalParameters.runType.equalsIgnoreCase(TestConstants.MOBILE_PLATFORM)){
+            service.stop();
+        } else {
+            logger.debug("APPIUM SERVER IS NOT RUNNING");
+        }
+    }
 
     public WebDriver getDriver() {
         return this.driver;

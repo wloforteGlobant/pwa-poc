@@ -73,9 +73,7 @@ public class BaseClass {
                 driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
                 logger.debug("Web driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
-
             case TestConstants.MOBILE_PLATFORM:
-                if (!isServerRunnning()) { startAppiumServer(); }
                 logger.debug("Mobile Device: " + runOn + " is opening.....");
                 DesiredCapabilities desiredCapabilities = setupDevice(runOn + ".json");
                 try {
@@ -92,21 +90,27 @@ public class BaseClass {
         }
     }
 
-    public void startAppiumServer() {
+    @Parameters({TestConstants.PLATFORM})
+    @BeforeTest
+    public void startAppiumServer(@Optional(TestConstants.WEB_PLATFORM) String platform) {
+        if (!isServerRunnning()) {
+            if (platform.equalsIgnoreCase(TestConstants.MOBILE_PLATFORM)) {
+                appiumCapabilities = new DesiredCapabilities();
+                appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_BINARY, path + TestConstants.APPIUM_CHROME_PATH);
+                appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_RESET, "false");
 
-        appiumCapabilities = new DesiredCapabilities();
-        appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_BINARY, path + TestConstants.APPIUM_CHROME_PATH);
-        appiumCapabilities.setCapability(TestConstants.APPIUM_CAP_RESET, "false");
+                appiumServiceBuilder = new AppiumServiceBuilder();
+                appiumServiceBuilder.withIPAddress(TestConstants.APPIUM_IP_ADDRESS);
+                appiumServiceBuilder.usingPort(TestConstants.APPIUM_PORT);
+                appiumServiceBuilder.withCapabilities(appiumCapabilities);
+                appiumServiceBuilder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
+                appiumServiceBuilder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
 
-        appiumServiceBuilder = new AppiumServiceBuilder();
-        appiumServiceBuilder.withIPAddress(TestConstants.APPIUM_IP_ADDRESS);
-        appiumServiceBuilder.usingPort(TestConstants.APPIUM_PORT);
-        appiumServiceBuilder.withCapabilities(appiumCapabilities);
-        appiumServiceBuilder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
-        appiumServiceBuilder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
-
-        service = AppiumDriverLocalService.buildService(appiumServiceBuilder);
-        service.start();
+                service = AppiumDriverLocalService.buildService(appiumServiceBuilder);
+                service.start();
+                logger.info("APPIUM SERVER STARTED");
+            }
+        }
     }
 
     private boolean isServerRunnning() {
@@ -153,9 +157,10 @@ public class BaseClass {
         }
     }
 
-    @AfterSuite(alwaysRun = true)
+    @AfterTest
     public void stopAppiumServer() {
         if (GlobalParameters.runType.equalsIgnoreCase(TestConstants.MOBILE_PLATFORM)){
+            logger.info("APPIUM SERVER STOPPED");
             service.stop();
         } else {
             logger.debug("APPIUM SERVER IS NOT RUNNING");

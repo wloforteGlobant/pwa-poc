@@ -34,7 +34,8 @@ import org.json.simple.parser.JSONParser;
  */
 public class BaseClass {
 
-    private static WebDriver driver;
+    private static WebDriver webDriver;
+    private static AppiumDriver appiumDriver;
     private Logger logger = LogManager.getLogger(BaseClass.class);
     private AppiumDriverLocalService service;
     private AppiumServiceBuilder appiumServiceBuilder;
@@ -52,36 +53,35 @@ public class BaseClass {
                     case TestConstants.CHROME_BROWSER:
                         logger.debug("Chrome Browser is opening...");
                         System.setProperty(TestConstants.CHROME_PROPERTY, path + TestConstants.CHROME_PATH);
-                        driver = new ChromeDriver();
+                        webDriver = new ChromeDriver();
                         break;
                     case TestConstants.SAFARI_BROWSER:
                         logger.debug("Safari Browser is opening...");
-                        driver = new SafariDriver();
+                        webDriver = new SafariDriver();
                         break;
                     case TestConstants.FIREFOX_BROWSER:
                         logger.debug("Firefox Browser is opening...");
                         System.setProperty(TestConstants.FIREFOX_PROPERTY, path + TestConstants.FIREFOX_PATH);
-                        driver = new FirefoxDriver();
+                        webDriver = new FirefoxDriver();
                         break;
                     case TestConstants.EDGE_BROWSER:
                         logger.debug("Edge is opening...");
                         //TODO IMPLEMENT EDGE
                         break;
                 }
-                driver.manage().window().maximize();
-                driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
-                driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+                webDriver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
+                webDriver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
                 logger.debug("Web driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
             case TestConstants.MOBILE_PLATFORM:
                 logger.debug("Mobile Device: " + runOn + " is opening.....");
                 DesiredCapabilities desiredCapabilities = setupDevice(runOn + ".json");
                 try {
-                    driver = new AppiumDriver(new URL(FileReaderManager.getInstance().getConfigReader().getAppiumUrl()), desiredCapabilities);
+                    appiumDriver = new AppiumDriver(new URL(FileReaderManager.getInstance().getConfigReader().getAppiumUrl()), desiredCapabilities);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                driver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
+                appiumDriver.get(FileReaderManager.getInstance().getConfigReader().getAppUrl());
                 logger.debug("Appium driver started. Thread ID = " + Thread.currentThread().getId());
                 break;
             default:
@@ -150,10 +150,10 @@ public class BaseClass {
 
     @AfterClass(alwaysRun = true)
     public void tearDown() {
-        if (driver.toString() == null){
-            logger.debug("DRIVER SESSION IS NOT ACTIVE");
+        if (GlobalParameters.runType.equalsIgnoreCase(TestConstants.MOBILE_PLATFORM)){
+            appiumDriver.quit();
         } else {
-            driver.quit();
+            webDriver.quit();
         }
     }
 
@@ -168,7 +168,11 @@ public class BaseClass {
     }
 
     public WebDriver getDriver() {
-        return this.driver;
+        return this.webDriver;
+    }
+
+    public AppiumDriver getAppiumDriver() {
+        return this.appiumDriver;
     }
 
 }

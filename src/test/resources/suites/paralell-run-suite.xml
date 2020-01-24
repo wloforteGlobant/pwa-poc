@@ -4,28 +4,35 @@
         <parameter name="platform" value="web"/>
         <parameter name="runOn" value="chrome"/>
         <classes>
-            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>
     </test>
     <test name="Safari">
         <parameter name="platform" value="web"/>
         <parameter name="runOn" value="safari"/>
         <classes>
-            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
+        </classes>
+    </test>
+    <test name="Firefox">
+        <parameter name="platform" value="web"/>
+        <parameter name="runOn" value="firefox"/>
+        <classes>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>
     </test>
     <test name="Pixel">
         <parameter name="platform" value="mobile"/>
         <parameter name="runOn" value="Pixel"/>
         <classes>
-            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>
     </test>
-    <test name="iPhone">
+    <test name="iPhone_11">
         <parameter name="platform" value="mobile"/>
         <parameter name="runOn" value="iPhone"/>
         <classes>
-            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>
     </test>
 </suite>

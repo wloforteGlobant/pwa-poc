@@ -1,9 +1,10 @@
 package com.loyalty.pwa.appium.pages;
 
+import com.loyalty.pwa.appium.base.BaseClass;
 import com.loyalty.pwa.appium.base.TestConstants;
 import com.loyalty.pwa.appium.utility.GlobalParameters;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 import java.util.function.Function;
 /*
  *
@@ -21,27 +22,23 @@ import java.util.function.Function;
  */
 public class BasePage {
 
-    protected static WebDriver driver;
+    protected static WebDriver webDriver;
+    protected static AppiumDriver appiumDriver;
     protected static WebDriverWait wait;
     protected static int timeoutSec;
 
-    public BasePage (WebDriver driver) {
-        this.driver = driver;
-        timeoutSec = TestConstants.TIMEOUT_SECONDS;
-        this.wait = new WebDriverWait(driver, timeoutSec);
-        driver.manage().timeouts().implicitlyWait(timeoutSec, TimeUnit.SECONDS);
+    public BasePage () {
+        BaseClass baseClass = new BaseClass();
+        webDriver = baseClass.getDriver();
+        appiumDriver = baseClass.getAppiumDriver();
         if(GlobalParameters.runType.equalsIgnoreCase(TestConstants.WEB_PLATFORM)) {
-            PageFactory.initElements(driver, this);
+            PageFactory.initElements(webDriver, this);
         } else {
-            PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+            PageFactory.initElements(new AppiumFieldDecorator(appiumDriver), this);
         }
     }
 
-    public static WebDriver getDriver(){
-        return driver;
-    }
-
-    WebElement fluentWait(WebDriver driver, By elementIdentifier){
+    protected WebElement fluentWait(WebDriver driver, WebElement webElement){
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                 .withTimeout(Duration.ofSeconds(TestConstants.TIMEOUT_SECONDS))
                 .pollingEvery(Duration.ofSeconds(1))
@@ -49,8 +46,23 @@ public class BasePage {
 
         return wait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver driver) {
-                return driver.findElement(elementIdentifier);
+                return webElement;
             }
         });
     }
+
+    protected void clickElement (WebElement webElement) {
+        webElement.click();
+    }
+
+    protected void sendText(WebElement webElement, String text) {
+        webElement.sendKeys(text);
+    }
+
+    protected void switchDriverContext() {
+        /* TBD */
+        Set<String> driverContext = appiumDriver.getContextHandles();
+        System.out.println(driverContext);
+    }
+
 }

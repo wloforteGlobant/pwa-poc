@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="PWA" >
-    <test name="Chrome">
-        <parameter name="platform" value="web"/>
-        <parameter name="runOn" value="chrome"/>
+    <test name="iPhone_11">
+        <parameter name="platform" value="mobile"/>
+        <parameter name="runOn" value="iPhone"/>
         <classes>
             <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>

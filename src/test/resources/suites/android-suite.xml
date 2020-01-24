@@ -1,10 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="PWA" >
-    <test name="Chrome">
+    <test name="Pixel">
         <parameter name="platform" value="mobile"/>
         <parameter name="runOn" value="Pixel"/>
         <classes>
-            <class name="com.loyalty.pwa.appium.tests.AboutPageTest"/>
+            <class name="com.loyalty.pwa.appium.tests.ForgotUserTest"/>
         </classes>
     </test>
 </suite>
